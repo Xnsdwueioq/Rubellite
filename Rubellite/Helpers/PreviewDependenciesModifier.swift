@@ -11,6 +11,7 @@ struct PreviewDependenciesModifier: ViewModifier {
     content
       .modelContainer(modelContainer)
       .environment(router)
+      .environment(DataManager(modelContext: modelContainer.mainContext))
   }
 }
 

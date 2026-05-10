@@ -13,11 +13,11 @@ struct FoodEntryDraft {
   
   // Для режима "с упаковки"
   var isPackageMode: Bool = false
-
+  
+  var portionGrams: String = ""
   var packageGrams: String = ""
   var packageCalories: String = ""
   var packageProtein: String = ""
   var packageFat: String = ""
   var packageCarbs: String = ""
-  
 }
