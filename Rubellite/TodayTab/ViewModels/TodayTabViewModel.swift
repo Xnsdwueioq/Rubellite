@@ -32,5 +32,6 @@ final class TodayTabViewModel {
     } catch {
       print(error.localizedDescription)
     }
+    isFoodEntryCreating = false
   }
 }

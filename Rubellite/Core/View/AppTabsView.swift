@@ -8,38 +8,40 @@ struct AppTabsView: View {
   var body: some View {
     @Bindable var router = router
     
-    TabView(selection: $router.selectedTab) {
-      // MARK: - Statistic Tab
-      Tab(
-        value: AppRouter.Tab.statistic,
-        content: {
-          Text("Statistics")
-        },
-        label: {
-          Image(systemName: "chart.bar.xaxis")
-        }
-      )
-      
-      // MARK: - Today Tab
-      Tab(
-        value: AppRouter.Tab.today,
-        content: {
-          TodayTabView()
-        },
-        label: {
-          Image(systemName: "text.rectangle.page")
-        }
-      )
-      
-      Tab(
-        value: AppRouter.Tab.settings,
-        content: {
-          Text("Settings")
-        },
-        label: {
-          Image(systemName: "gear")
-        }
-      )
+    NavigationStack {
+      TabView(selection: $router.selectedTab) {
+        // MARK: - Statistic Tab
+        Tab(
+          value: AppRouter.Tab.statistic,
+          content: {
+            StatisticTabView()
+          },
+          label: {
+            Image(systemName: "chart.bar.xaxis")
+          }
+        )
+        
+        // MARK: - Today Tab
+        Tab(
+          value: AppRouter.Tab.today,
+          content: {
+            TodayTabView()
+          },
+          label: {
+            Image(systemName: "text.rectangle.page")
+          }
+        )
+        
+        Tab(
+          value: AppRouter.Tab.settings,
+          content: {
+            Text("Settings")
+          },
+          label: {
+            Image(systemName: "gear")
+          }
+        )
+      }
     }
   }
 }
