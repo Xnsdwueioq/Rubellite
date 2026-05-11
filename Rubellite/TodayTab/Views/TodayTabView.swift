@@ -12,7 +12,7 @@ struct TodayTabView: View {
       }
       .buttonStyle(.glassProminent)
     }
-    .sheet(isPresented: $viewModel.isFoodEntryCreating) {
+    .sheet(item: $viewModel.formViewModel) { viewModel in
       CreationFoodEntryView(viewModel: viewModel)
     }
   }

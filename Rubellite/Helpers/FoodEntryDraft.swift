@@ -11,7 +11,7 @@ struct FoodEntryDraft {
   var fat: String = ""
   var carbs: String = ""
   
-  // Для режима "с упаковки"
+  // Для режима "C упаковки"
   var isPackageMode: Bool = false
   
   var portionGrams: String = ""
@@ -20,4 +20,16 @@ struct FoodEntryDraft {
   var packageProtein: String = ""
   var packageFat: String = ""
   var packageCarbs: String = ""
+  
+  init() { }
+  
+  init(from entry: FoodEntry) {
+    self.name = entry.name
+    self.date = entry.date
+    self.grams = entry.grams.formatted()
+    self.calories = entry.calories.formatted()
+    self.protein = entry.protein.formatted()
+    self.fat = entry.fat.formatted()
+    self.carbs = entry.carbs.formatted()
+  }
 }

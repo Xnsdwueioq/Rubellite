@@ -2,69 +2,71 @@
 
 import SwiftUI
 
-enum Field: Hashable {
-  case name
-  case grams, calories, protein, fat, carbs
-  case portionGrams, packageGrams, packageCalories, packageProtein, packageFat, packageCarbs
-}
-
 struct CreationFoodEntryView: View {
+  
+  enum Field: Hashable {
+    case name
+    case grams, calories, protein, fat, carbs
+    case portionGrams, packageGrams, packageCalories, packageProtein, packageFat, packageCarbs
+  }
+  
   @Environment(DataManager.self) private var dataManager
   @Environment(ErrorHandler.self) private var errorHandler
-  @Bindable var viewModel: TodayTabViewModel
+  @Bindable var viewModel: FoodEntryFormViewModel
   @FocusState private var focused: Field?
   
   var body: some View {
     NavigationStack {
       List {
         Section("Детали") {
-          TextField("Название", text: $viewModel.newFoodEntry.name)
+          TextField("Название", text: $viewModel.foodEntryDraft.name)
             .keyboardType(.asciiCapable)
             .focused($focused, equals: .name)
             .onSubmit {
               focused = .grams
             }
-          DatePicker("Дата", selection: $viewModel.newFoodEntry.date)
+          DatePicker("Дата", selection: $viewModel.foodEntryDraft.date)
         }
         Section("Состав") {
-          Toggle("С упаковки", systemImage: "list.dash.header.rectangle", isOn: $viewModel.newFoodEntry.isPackageMode.animation(.snappy))
-          if !viewModel.newFoodEntry.isPackageMode {
-            TextField("Граммы", text: $viewModel.newFoodEntry.grams)
+          Toggle("С упаковки", systemImage: "list.dash.header.rectangle", isOn: $viewModel.foodEntryDraft.isPackageMode.animation(.snappy))
+          if !viewModel.foodEntryDraft.isPackageMode {
+            TextField("Граммы", text: $viewModel.foodEntryDraft.grams)
               .focused($focused, equals: .grams)
-            TextField("Каллории", text: $viewModel.newFoodEntry.calories)
+            TextField("Каллории", text: $viewModel.foodEntryDraft.calories)
               .focused($focused, equals: .calories)
-            TextField("Белки", text: $viewModel.newFoodEntry.protein)
+            TextField("Белки", text: $viewModel.foodEntryDraft.protein)
               .focused($focused, equals: .protein)
-            TextField("Жиры", text: $viewModel.newFoodEntry.fat)
+            TextField("Жиры", text: $viewModel.foodEntryDraft.fat)
               .focused($focused, equals: .fat)
-            TextField("Углеводы", text: $viewModel.newFoodEntry.carbs)
+            TextField("Углеводы", text: $viewModel.foodEntryDraft.carbs)
               .focused($focused, equals: .carbs)
               .submitLabel(.done)
           } else {
-            TextField("Граммы порции", text: $viewModel.newFoodEntry.portionGrams)
+            TextField("Граммы порции", text: $viewModel.foodEntryDraft.portionGrams)
               .focused($focused, equals: .portionGrams)
-            TextField("Граммы с упаковки", text: $viewModel.newFoodEntry.packageGrams)
+            TextField("Граммы с упаковки", text: $viewModel.foodEntryDraft.packageGrams)
               .focused($focused, equals: .packageGrams)
-            TextField("Каллории с упаковки", text: $viewModel.newFoodEntry.packageCalories)
+            TextField("Каллории с упаковки", text: $viewModel.foodEntryDraft.packageCalories)
               .focused($focused, equals: .packageCalories)
-            TextField("Белки с упаковки", text: $viewModel.newFoodEntry.packageProtein)
+            TextField("Белки с упаковки", text: $viewModel.foodEntryDraft.packageProtein)
               .focused($focused, equals: .packageProtein)
-            TextField("Жиры с упаковки", text: $viewModel.newFoodEntry.packageFat)
+            TextField("Жиры с упаковки", text: $viewModel.foodEntryDraft.packageFat)
               .focused($focused, equals: .packageFat)
-            TextField("Углеводы с упаковки", text: $viewModel.newFoodEntry.packageCarbs)
+            TextField("Углеводы с упаковки", text: $viewModel.foodEntryDraft.packageCarbs)
               .focused($focused, equals: .packageCarbs)
               .submitLabel(.done)
           }
         }
         .keyboardType(.numbersAndPunctuation)
       }
-      .navigationTitle("Новая запись")
+      .navigationTitle(viewModel.navigationTitle)
       .navigationBarTitleDisplayMode(.inline)
+      
       // MARK: - Field Focus Settings
       .onAppear { focused = .name }
       .onSubmit {
         guard let focused else { return }
-        let isPackage = viewModel.newFoodEntry.isPackageMode
+        let isPackage = viewModel.foodEntryDraft.isPackageMode
         
         let next: Field? = switch focused {
         case .name:           isPackage ? .packageGrams     : .grams
@@ -90,7 +92,7 @@ struct CreationFoodEntryView: View {
         ToolbarItem(placement: .primaryAction) {
           Button(action: {
             do {
-              try viewModel.createFoodEntry(dataManager: dataManager)
+              try viewModel.save(dataManager: dataManager)
             } catch {
               errorHandler.handle(error)
             }

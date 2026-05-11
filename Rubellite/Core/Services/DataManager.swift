@@ -22,6 +22,15 @@ final class DataManager {
     }
   }
   
+  func save() throws {
+    do {
+      try modelContext.save()
+    } catch {
+      Logger.database.error("Не удалось сохранить данные.")
+      throw AppError.saveFailed
+    }
+  }
+  
   func delete(entry: FoodEntry) throws {
     do {
       modelContext.delete(entry)
