@@ -45,8 +45,3 @@ struct AppTabsView: View {
     }
   }
 }
-
-#Preview {
-  AppTabsView()
-    .withPreviewDependencies()
-}

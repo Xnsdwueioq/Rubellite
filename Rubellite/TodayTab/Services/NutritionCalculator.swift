@@ -1,7 +1,9 @@
 //
 
+import os
+
 final class NutritionCalculator {
-  func calculateNutrition(from draft: FoodEntryDraft) -> Nutrition? {
+  func calculateNutrition(from draft: FoodEntryDraft) throws -> Nutrition {
     // MARK: - No Package
     if !draft.isPackageMode {
       if let grams = Double(draft.grams),
@@ -12,7 +14,8 @@ final class NutritionCalculator {
         let nutrition: Nutrition = (name: draft.name, date: draft.date, grams: grams, calories: calories, protein: protein, fat: fat, carbs: carbs)
         return nutrition
       } else {
-        print("Не удалось рассчитать состав. Некоторые данные введены некорректно.")
+        Logger.services.error("Не удалось рассчитать состав. Некоторые данные введены некорректно.")
+        throw AppError.nutritionCalculeFailed
       }
       
     // MARK: - Package Mode
@@ -32,28 +35,30 @@ final class NutritionCalculator {
         let nutrition: Nutrition = (name: draft.name, date: draft.date, grams: portionGrams, calories: calories, protein: protein, fat: fat, carbs: carbs)
         return nutrition
       } else {
-        print("Не удалось рассчитать состав по упаковке. Некоторые данные введены некорректно.")
+        Logger.services.error("Не удалось рассчитать состав по упаковке. Некоторые данные введены некорректно.")
+        throw AppError.nutritionCalculeFailed
       }
     }
-    return nil
   }
   
-  func fillInFoodEntry(draft: FoodEntryDraft) -> FoodEntry? {
-    guard let nutrition = calculateNutrition(from: draft) else {
-      print("Запись не заполнена. Не удалось получить состав продукта.")
-      return nil
+  func fillInFoodEntry(draft: FoodEntryDraft) throws -> FoodEntry {
+    do {
+      let nutrition = try calculateNutrition(from: draft)
+      
+      let newEntry = FoodEntry(
+        name: nutrition.name,
+        date: nutrition.date,
+        grams: nutrition.grams,
+        calories: nutrition.calories,
+        protein: nutrition.protein,
+        fat: nutrition.fat,
+        carbs: nutrition.carbs
+      )
+      
+      return newEntry
+    } catch {
+      Logger.services.error("Не удалось создать новую запись, так как не был рассчитан состав.")
+      throw error
     }
-    
-    let newEntry = FoodEntry(
-      name: nutrition.name,
-      date: nutrition.date,
-      grams: nutrition.grams,
-      calories: nutrition.calories,
-      protein: nutrition.protein,
-      fat: nutrition.fat,
-      carbs: nutrition.carbs
-    )
-    
-    return newEntry
   }
 }

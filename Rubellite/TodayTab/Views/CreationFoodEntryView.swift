@@ -10,6 +10,7 @@ enum Field: Hashable {
 
 struct CreationFoodEntryView: View {
   @Environment(DataManager.self) private var dataManager
+  @Environment(ErrorHandler.self) private var errorHandler
   @Bindable var viewModel: TodayTabViewModel
   @FocusState private var focused: Field?
   
@@ -88,19 +89,16 @@ struct CreationFoodEntryView: View {
       .toolbar {
         ToolbarItem(placement: .primaryAction) {
           Button(action: {
-            viewModel.createFoodEntry(dataManager: dataManager)
+            do {
+              try viewModel.createFoodEntry(dataManager: dataManager)
+            } catch {
+              errorHandler.handle(error)
+            }
           }) {
             Image(systemName: "plus")
           }
         }
       }
     }
-  }
-}
-
-#Preview {
-  NavigationStack {
-    CreationFoodEntryView(viewModel: TodayTabViewModel())
-      .withPreviewDependencies()
   }
 }

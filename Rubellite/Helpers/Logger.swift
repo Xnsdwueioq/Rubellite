@@ -8,4 +8,5 @@ extension Logger {
   
   static let ui = Logger(subsystem: subsystem, category: "UI")
   static let database = Logger(subsystem: subsystem, category: "Database")
+  static let services = Logger(subsystem: subsystem, category: "Services")
 }

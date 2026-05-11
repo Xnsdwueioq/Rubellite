@@ -23,15 +23,9 @@ final class TodayTabViewModel {
     isFoodEntryCreating = true
   }
   
-  func createFoodEntry(dataManager: DataManager) {
-    guard let foodEntry = nutritionCalculator.fillInFoodEntry(draft: newFoodEntry) else {
-      return
-    }
-    do {
-      try dataManager.add(entry: foodEntry)
-    } catch {
-      print(error.localizedDescription)
-    }
+  func createFoodEntry(dataManager: DataManager) throws {
+    let foodEntry = try nutritionCalculator.fillInFoodEntry(draft: newFoodEntry)
+    try dataManager.add(entry: foodEntry)
     isFoodEntryCreating = false
   }
 }

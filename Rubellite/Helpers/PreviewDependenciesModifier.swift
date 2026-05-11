@@ -6,12 +6,14 @@ import SwiftData
 struct PreviewDependenciesModifier: ViewModifier {
   @State private var modelContainer = PreviewContainer.container
   @State private var router = AppRouter()
+  @State private var errorHandler = ErrorHandler()
   
   func body(content: Content) -> some View {
     content
       .modelContainer(modelContainer)
       .environment(router)
       .environment(DataManager(modelContext: modelContainer.mainContext))
+      .environment(errorHandler)
   }
 }
 
