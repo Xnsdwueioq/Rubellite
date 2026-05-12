@@ -20,7 +20,6 @@ struct CreationFoodEntryView: View {
       List {
         Section("Детали") {
           TextField("Название", text: $viewModel.foodEntryDraft.name)
-            .keyboardType(.asciiCapable)
             .focused($focused, equals: .name)
             .onSubmit {
               focused = .grams

@@ -25,7 +25,7 @@ extension FoodEntryDraft {
       return isPortionGramsValid && isPackageGramsValid &&
       isPackageCaloriesValid && isPackageProteinValid &&
       isPackageFatValid && isPackageCarbsValid
-    } else {  
+    } else {
       return isGramsValid && isCaloriesValid &&
       isProteinValid && isFatValid && isCarbsValid
     }
