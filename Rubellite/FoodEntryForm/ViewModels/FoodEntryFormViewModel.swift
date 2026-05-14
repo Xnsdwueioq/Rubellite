@@ -26,6 +26,15 @@ final class FoodEntryFormViewModel: Identifiable {
     }
   }
   
+  var saveButtonSysemImage: String {
+    switch mode {
+    case .create:
+      "plus"
+    case .edit:
+      "checkmark"
+    }
+  }
+  
   init(
     mode: Mode = .create,
     nutritionCalculator: NutritionCalculator = NutritionCalculator()
@@ -41,6 +50,7 @@ final class FoodEntryFormViewModel: Identifiable {
   }
   
   func save(dataManager: DataManager) throws {
+    guard isFoodEntryDraftValid else { throw AppError.nonValidEntryForm }
     switch mode {
     case .create:
       let entry = try nutritionCalculator.fillInFoodEntry(draft: foodEntryDraft)

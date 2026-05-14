@@ -10,6 +10,7 @@ struct CreationFoodEntryView: View {
     case portionGrams, packageGrams, packageCalories, packageProtein, packageFat, packageCarbs
   }
   
+  @Environment(\.dismiss) private var dismiss
   @Environment(DataManager.self) private var dataManager
   @Environment(ErrorHandler.self) private var errorHandler
   @Bindable var viewModel: FoodEntryFormViewModel
@@ -92,6 +93,7 @@ struct CreationFoodEntryView: View {
           Button(action: {
             do {
               try viewModel.save(dataManager: dataManager)
+              dismiss()
             } catch {
               errorHandler.handle(error)
             }

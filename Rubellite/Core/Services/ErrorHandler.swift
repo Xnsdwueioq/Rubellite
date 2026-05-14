@@ -7,6 +7,7 @@ enum AppError: LocalizedError {
   case deleteFailed
   case fetchFailed
   case nutritionCalculeFailed
+  case nonValidEntryForm
   
   var errorDescription: String? {
     switch self {
@@ -14,6 +15,7 @@ enum AppError: LocalizedError {
     case .deleteFailed: "Не удалось удалить данные."
     case .fetchFailed: "Не удалось загрузить данные."
     case .nutritionCalculeFailed: "Не удалось выполнить расчет состава продукта."
+    case .nonValidEntryForm: "Поля записи заполнены некорректно."
     }
   }
 }
