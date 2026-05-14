@@ -7,6 +7,7 @@ struct StatisticTabView: View {
     List {
       NavigationLink(destination: {
         EntriesListView()
+          .navigationTitle("Список записей")
       }) {
         Label("Список записей", systemImage: "book.pages.fill")
       }

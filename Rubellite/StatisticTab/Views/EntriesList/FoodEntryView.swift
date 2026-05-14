@@ -7,10 +7,13 @@ struct FoodEntryView: View {
   
   var body: some View {
     VStack {
+      // MARK: - Name
       HStack {
         Text(entry.name)
         Spacer()
       }
+      
+      // MARK: - Nutrition
       HStack(spacing: 5) {
         Text(entry.grams.formatted() + " г")
         Text("•")

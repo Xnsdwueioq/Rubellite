@@ -17,6 +17,7 @@ struct EntriesSectionListView: View {
         FoodEntryView(entry: entry)
         
         // MARK: - Swipe Actions
+          // MARK: Edit Swipe
           .swipeActions(
             edge: .leading,
             allowsFullSwipe: true
@@ -26,6 +27,8 @@ struct EntriesSectionListView: View {
             }
             .tint(.blue)
           }
+        
+          // MARK: Delete Swipe
           .swipeActions(
             edge: .trailing,
             allowsFullSwipe: true
@@ -41,9 +44,12 @@ struct EntriesSectionListView: View {
         
         // MARK: - Context Menu
           .contextMenu {
+            // MARK: Edit Button
             Button("Редактировать", systemImage: "pencil") {
               viewModel.editFoodEntry(entry: entry)
             }
+            
+            // MARK: Delete Button
             Button("Удалить", systemImage: "trash", role: .destructive) {
               viewModel.deleteFoodEntry(
                 entry: entry,
@@ -52,6 +58,8 @@ struct EntriesSectionListView: View {
               )
             }
           }
+        
+        // MARK: - Editing Sheet
           .sheet(item: $viewModel.formViewModel) { viewModel in
             FoodEntryFormView(viewModel: viewModel)
           }
