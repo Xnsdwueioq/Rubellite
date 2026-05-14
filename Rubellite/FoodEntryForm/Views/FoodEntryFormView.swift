@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-struct CreationFoodEntryView: View {
+struct FoodEntryFormView: View {
   
   enum Field: Hashable {
     case name
@@ -98,7 +98,7 @@ struct CreationFoodEntryView: View {
               errorHandler.handle(error)
             }
           }) {
-            Image(systemName: "plus")
+            Image(systemName: viewModel.saveButtonSysemImage)
           }
         }
       }
